@@ -20,12 +20,41 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         
-        let vc = ViewController()
-        let navController = UINavigationController(rootViewController: vc)
-        
-        window.rootViewController = navController
+        window.rootViewController = createTabBar()
         self.window = window
         window.makeKeyAndVisible()
+    }
+    
+    
+    // creating two similar functions looks cleaner compared to creating a
+    // generic function that passes in a type of VC, the title, type of tab bar
+    // item, and tag. This is especially evident when we call the functions
+    // above in scene(willConnectTo:)
+    private func createSearchNC() -> UINavigationController {
+        let searchVC = SearchVC()
+        searchVC.title = "Search"
+        searchVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
+        
+        return UINavigationController(rootViewController: searchVC)
+    }
+    
+    
+    private func createFavoritesListNC() -> UINavigationController {
+        let favoritesListVC = FavoritesListVC()
+        favoritesListVC.title = "Favorites"
+        favoritesListVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
+        
+        return UINavigationController(rootViewController: favoritesListVC)
+    }
+    
+    
+    private func createTabBar() -> UITabBarController {
+        let tabBar = UITabBarController()
+        tabBar.viewControllers = [createSearchNC(), createFavoritesListNC()]
+        // app-wide configuration of tab bar
+        UITabBar.appearance().tintColor = .systemGreen
+        
+        return tabBar
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

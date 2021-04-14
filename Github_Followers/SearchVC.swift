@@ -8,11 +8,24 @@
 import UIKit
 
 class SearchVC: UIViewController {
-
+    
+    // MARK: - Properties
+    private let searchView = SearchView()
+    
+    
+    // MARK: - View lifecycle
+    override func loadView() {
+        super.loadView()
+        self.view = searchView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemRed
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
     }
 
 

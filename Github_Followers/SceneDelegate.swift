@@ -23,6 +23,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = createTabBar()
         self.window = window
         window.makeKeyAndVisible()
+        
+        configureNavigationBar()
+    }
+    
+    
+    // MARK: - Custom setup methods
+    private func configureNavigationBar() {
+        UINavigationBar.appearance().tintColor = .systemGreen
     }
     
     
@@ -57,6 +65,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return tabBar
     }
 
+    
+    // MARK: - Other scene methods
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.

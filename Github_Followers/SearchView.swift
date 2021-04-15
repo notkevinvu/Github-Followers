@@ -7,10 +7,18 @@
 
 import UIKit
 
+protocol SearchViewDelegate: class {
+    func searchView(_ searchView: SearchView, shouldGetFollowersFor username: String)
+}
+
 final class SearchView: UIView {
     
     
-    // MARK: - Properties
+    // MARK: - Delegate
+    weak var delegate: SearchViewDelegate?
+    
+    
+    // MARK: - UI Properties
     private let logoImageView: UIImageView = {
         let imView = UIImageView(frame: .zero)
         imView.translatesAutoresizingMaskIntoConstraints = false
@@ -43,6 +51,17 @@ final class SearchView: UIView {
     private func createDismissKeyboardTapGesture() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(endEditing(_:)))
         addGestureRecognizer(tap)
+    }
+    
+    
+    // MARK: - Navigation method
+    @objc private func pushFollowerListVC() {
+        guard
+            let username = usernameTextField.text,
+            !username.trimmingCharacters(in: .whitespaces).isEmpty
+        else { return }
+        delegate?.searchView(self, shouldGetFollowersFor: username)
+        
     }
     
     
@@ -92,6 +111,7 @@ final class SearchView: UIView {
     
     private func configureGetFollowersButton() {
         addSubview(getFollowersButton)
+        getFollowersButton.addTarget(self, action: #selector(pushFollowerListVC), for: .touchUpInside)
         
         // pinning to bottom, while specifying height
         let btnBottomAnchor = getFollowersButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -50)
@@ -124,8 +144,8 @@ final class SearchView: UIView {
 extension SearchView: UITextFieldDelegate {
     // passing data and dismissing keyboard after pressing return/go
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        guard let usernameToFetch = textField.text else { return true }
-        textField.resignFirstResponder()
+        pushFollowerListVC()
+        endEditing(true)
         return true
     }
 }

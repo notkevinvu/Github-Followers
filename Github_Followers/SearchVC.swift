@@ -10,12 +10,12 @@ import UIKit
 class SearchVC: UIViewController {
     
     // MARK: - Properties
-    private let searchView = SearchView()
+    private var searchView: SearchView!
     
     
     // MARK: - View lifecycle
     override func loadView() {
-        super.loadView()
+        setupView()
         self.view = searchView
     }
     
@@ -27,7 +27,25 @@ class SearchVC: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
     }
+    
+    
+    // MARK: - Setup methods
+    private func setupView() {
+        let view = SearchView()
+        view.delegate = self
+        searchView = view
+    }
+
+}
 
 
+// MARK: - Search view delegate
+extension SearchVC: SearchViewDelegate {
+    func searchView(_ searchView: SearchView, shouldGetFollowersFor username: String) {
+        let followerListVC = FollowerListVC()
+        followerListVC.username = username
+        followerListVC.title = username
+        navigationController?.pushViewController(followerListVC, animated: true)
+    }
 }
 

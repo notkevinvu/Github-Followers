@@ -32,6 +32,7 @@ final class GFTitleLabel: UILabel {
 }
 
 
+// MARK: - Configure methods
 private extension GFTitleLabel {
     func configure() {
         textColor = .label

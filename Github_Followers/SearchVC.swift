@@ -41,14 +41,14 @@ class SearchVC: UIViewController {
 
 // MARK: - Search view delegate
 extension SearchVC: SearchViewDelegate {
-    func searchView(_ searchView: SearchView, shouldGetFollowersFor username: String) {
+    func searchView(_ searchView: SearchView, didSubmitSearchFor username: String) {
         let followerListVC = FollowerListVC()
         followerListVC.username = username
         followerListVC.title = username
         navigationController?.pushViewController(followerListVC, animated: true)
     }
     
-    func searchViewShouldPresentErrorAlert(_ searchView: SearchView) {
+    func searchViewDidReceiveError(_ searchView: SearchView) {
         presentGFAlertOnMainThread(title: "Empty username", message: "Please enter a username. We need to know who to search for 😀", buttonTitle: "OK")
     }
 }

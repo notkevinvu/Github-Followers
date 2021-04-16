@@ -8,10 +8,10 @@
 import UIKit
 
 protocol SearchViewDelegate: class {
-    func searchView(_ searchView: SearchView, shouldGetFollowersFor username: String)
+    func searchView(_ searchView: SearchView, didSubmitSearchFor username: String)
     // maybe add a parameter that allows us to specify a specific error
     // via an enum (i.e. .emptyUsername, .networkError, etc)
-    func searchViewShouldPresentErrorAlert(_ searchView: SearchView)
+    func searchViewDidReceiveError(_ searchView: SearchView)
 }
 
 final class SearchView: UIView {
@@ -63,10 +63,10 @@ final class SearchView: UIView {
             let username = usernameTextField.text,
             !username.trimmingCharacters(in: .whitespaces).isEmpty
         else {
-            delegate?.searchViewShouldPresentErrorAlert(self)
+            delegate?.searchViewDidReceiveError(self)
             return
         }
-        delegate?.searchView(self, shouldGetFollowersFor: username)
+        delegate?.searchView(self, didSubmitSearchFor: username)
     }
     
     

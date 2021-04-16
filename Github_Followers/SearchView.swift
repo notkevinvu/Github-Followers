@@ -61,7 +61,6 @@ final class SearchView: UIView {
             !username.trimmingCharacters(in: .whitespaces).isEmpty
         else { return }
         delegate?.searchView(self, shouldGetFollowersFor: username)
-        
     }
     
     

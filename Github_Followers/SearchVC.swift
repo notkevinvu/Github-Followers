@@ -47,5 +47,9 @@ extension SearchVC: SearchViewDelegate {
         followerListVC.title = username
         navigationController?.pushViewController(followerListVC, animated: true)
     }
+    
+    func searchViewShouldPresentErrorAlert(_ searchView: SearchView) {
+        presentGFAlertOnMainThread(title: "Empty username", message: "Please enter a username. We need to know who to search for 😀", buttonTitle: "OK")
+    }
 }
 

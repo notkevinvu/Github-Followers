@@ -10,17 +10,18 @@ import Foundation
 struct Follower: Codable {
     // both are non-optional as the github api will always return a non-nil/null
     // value for these properties in the response JSON
-    var login: String
-    var avatarUrl: String
+    public var login: String
+    // avatarUrl is actually avatar_url in JSON response. We can use the
+    // .convertFromSnakeCase keyDecodingStrategy when creating a Decoder object
+    // to handle these cases
+    public var avatarUrl: String
 }
 
 
-// alternatively, we could forgo this implementation of coding keys
-// and use the .convertFromSnakeCase keyDecodingStrategy when creating a
-// JSONDecoder
-extension Follower {
-    enum CodingKeys: String, CodingKey {
-        case login,
-             avatarUrl = "avatar_url"
-    }
-}
+
+//extension Follower {
+//    enum CodingKeys: String, CodingKey {
+//        case login,
+//             avatarUrl = "avatar_url"
+//    }
+//}

@@ -19,14 +19,32 @@ final class FollowerListVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
+        
+        getFollowersOnLoad()
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // using screen-edge swiping for navigation won't keep
-        // suddenly showing and hiding the nav bar, but instead keeps the
-        // nav bar constrained to the VC that needs it shown
+        // better functionality with swiping back and forth for navigation
         navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    
+    // MARK: - Network methods
+    private func getFollowersOnLoad() {
+        // libquic failed error is apparently a simulator error - ignore,
+        // it does not affect behavior in any apparent way
+        NetworkManager.shared.getFollowers(for: username, page: 1) { [weak self] (followers, error) in
+            guard let self = self else { return }
+            
+            guard let followers = followers else {
+                self.presentGFAlertOnMainThread(title: "Bad stuff happened", message: error!.rawValue, buttonTitle: "Ok")
+                return
+            }
+            
+            print("Followers.count = \(followers.count)")
+            print(followers)
+        }
     }
 }

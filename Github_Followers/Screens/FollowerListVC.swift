@@ -17,10 +17,16 @@ final class FollowerListVC: UIViewController {
     // MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemPink
-        navigationController?.isNavigationBarHidden = false
+        view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // using screen-edge swiping for navigation won't keep
+        // suddenly showing and hiding the nav bar, but instead keeps the
+        // nav bar constrained to the VC that needs it shown
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
 }

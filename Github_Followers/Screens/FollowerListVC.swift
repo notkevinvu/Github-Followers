@@ -30,21 +30,25 @@ final class FollowerListVC: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
-    
+}
+
+
+extension FollowerListVC {
     // MARK: - Network methods
     private func getFollowersOnLoad() {
         // libquic failed error is apparently a simulator error - ignore,
         // it does not affect behavior in any apparent way
-        NetworkManager.shared.getFollowers(for: username, page: 1) { [weak self] (followers, error) in
+        NetworkManager.shared.getFollowers(for: username, page: 1) { [weak self] (result) in
             guard let self = self else { return }
             
-            guard let followers = followers else {
-                self.presentGFAlertOnMainThread(title: "Bad stuff happened", message: error!.rawValue, buttonTitle: "Ok")
-                return
+            switch result {
+                case .success(let followers):
+                    print("Followers.count = \(followers.count)")
+                    print(followers)
+                    
+                case .failure(let errorMessage):
+                    self.presentGFAlertOnMainThread(title: "Bad stuff happened", message: errorMessage.rawValue, buttonTitle: "Ok")
             }
-            
-            print("Followers.count = \(followers.count)")
-            print(followers)
         }
     }
 }

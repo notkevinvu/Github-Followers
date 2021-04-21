@@ -11,7 +11,7 @@ import Foundation
 // (data, response, error), checking for error, then response, then data,
 // then attempting to decode the data. Also we have a case for invalid username
 // since we are building our url via the username first.
-enum GFError: String {
+enum GFError: String, Error {
     /// Error for invalid usernames.
     case invalidUsername = "This username created an invalid request. Please try again"
     

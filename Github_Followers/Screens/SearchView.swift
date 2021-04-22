@@ -16,7 +16,6 @@ protocol SearchViewDelegate: class {
 
 final class SearchView: UIView {
     
-    
     // MARK: - Delegate
     weak var delegate: SearchViewDelegate?
     
@@ -37,6 +36,7 @@ final class SearchView: UIView {
     )
     
     
+    // MARK: - Object lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground

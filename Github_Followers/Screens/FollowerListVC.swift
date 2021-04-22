@@ -65,7 +65,7 @@ private extension FollowerListVC {
 }
 
 
-// MARK: - Collection view configuration
+// MARK: - Collection view config
 private extension FollowerListVC {
     func createThreeColumnCompositionalLayout() -> UICollectionViewCompositionalLayout {
         let width = view.bounds.width
@@ -99,7 +99,7 @@ private extension FollowerListVC {
     
     func configureCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createThreeColumnCompositionalLayout())
-        collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.identifier)
+        collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
         view.addSubview(collectionView)
         collectionView.backgroundColor = .systemPink
     }

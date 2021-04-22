@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Follower: Codable {
+struct Follower: Codable, Hashable {
     // both are non-optional as the github api will always return a non-nil/null
     // value for these properties in the response JSON
     var login: String
@@ -17,11 +17,3 @@ struct Follower: Codable {
     var avatarUrl: String
 }
 
-
-
-//extension Follower {
-//    enum CodingKeys: String, CodingKey {
-//        case login,
-//             avatarUrl = "avatar_url"
-//    }
-//}

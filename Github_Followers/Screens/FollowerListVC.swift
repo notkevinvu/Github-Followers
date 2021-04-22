@@ -11,6 +11,7 @@ final class FollowerListVC: UIViewController {
     
     // MARK: - UI Properties
     private var collectionView: UICollectionView!
+    private lazy var dataSource = FollowerListDiffableDataSource(collectionView: collectionView)
     
     // MARK: - Properties
     // set in getFollowersOnLoad()
@@ -54,9 +55,9 @@ private extension FollowerListVC {
             
             switch result {
                 case .success(let followers):
-                    print("Followers.count = \(followers.count)")
-                    print(followers)
-                    
+                    DispatchQueue.main.async {
+                        self.dataSource.applySnapshot(forFollowers: followers)
+                    }
                 case .failure(let errorMessage):
                     self.presentGFAlertOnMainThread(title: "Bad stuff happened", message: errorMessage.rawValue, buttonTitle: "Ok")
             }
@@ -79,16 +80,15 @@ private extension FollowerListVC {
             widthDimension: .absolute(itemWidth),
             heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let insets: CGFloat = 10
-        item.contentInsets = NSDirectionalEdgeInsets(top: insets, leading: insets, bottom: 0, trailing: insets)
         
-        // height is the width + 40 so we get a more rectangular item. This is
-        // because we have both the imageView and the name label, so if we
-        // want a roughly square image view, we need extra space for the label
+        // height has +40 and +(padding*2) to account for the label and padding;
+        // this is so we get a square-ish image view
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(itemWidth + 40))
+            heightDimension: .absolute(itemWidth + 40 + (padding * 2)))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.contentInsets = NSDirectionalEdgeInsets(top: padding, leading: padding, bottom: padding, trailing: padding)
+        group.interItemSpacing = .flexible(0)
         
         let section = NSCollectionLayoutSection(group: group)
         let layout = UICollectionViewCompositionalLayout(section: section)
@@ -101,6 +101,6 @@ private extension FollowerListVC {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createThreeColumnCompositionalLayout())
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
         view.addSubview(collectionView)
-        collectionView.backgroundColor = .systemPink
+        collectionView.backgroundColor = .systemBackground
     }
 }

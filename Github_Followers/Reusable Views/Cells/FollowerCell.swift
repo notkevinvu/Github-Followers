@@ -10,7 +10,7 @@ import UIKit
 final class FollowerCell: UICollectionViewCell {
     
     // MARK: - Properties
-    static let identifier = "FollowerCell"
+    static let reuseID = "FollowerCell"
     
     let avatarImageView = GFAvatarImageView(frame: .zero)
     let usernameLabel = GFTitleLabel(textAlignment: .center, fontSize: 16)
@@ -29,9 +29,9 @@ final class FollowerCell: UICollectionViewCell {
 }
 
 
-// MARK: - Core methods
-private extension FollowerCell {
-    func set(follower: Follower) {
+// MARK: - Public access methods
+extension FollowerCell {
+    public func set(follower: Follower) {
         usernameLabel.text = follower.login
     }
 }

@@ -36,7 +36,7 @@ final class FollowerListVC: UIViewController {
 }
 
 
-// MARK: - View controller methods
+// MARK: - VC Config methods
 private extension FollowerListVC {
     func configureViewController() {
         view.backgroundColor = .systemBackground
@@ -68,37 +68,8 @@ private extension FollowerListVC {
 
 // MARK: - Collection view config
 private extension FollowerListVC {
-    func createThreeColumnCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        let width = view.bounds.width
-        let padding: CGFloat = 12
-        let minimumItemSpacing: CGFloat = 10
-        // width minus 2x the other variables since we have 3 items per column
-        let availableWidth = width - (padding * 2) - (minimumItemSpacing * 2)
-        let itemWidth = availableWidth / 3
-        
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(itemWidth),
-            heightDimension: .fractionalHeight(1.0))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        // height has +40 and +(padding*2) to account for the label and padding;
-        // this is so we get a square-ish image view
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(itemWidth + 40 + (padding * 2)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = NSDirectionalEdgeInsets(top: padding, leading: padding, bottom: padding, trailing: padding)
-        group.interItemSpacing = .flexible(0)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        
-        return layout
-    }
-    
-    
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createThreeColumnCompositionalLayout())
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.CollectionViewMethods.createThreeColumnCompositionalLayout(in: view))
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
         view.addSubview(collectionView)
         collectionView.backgroundColor = .systemBackground

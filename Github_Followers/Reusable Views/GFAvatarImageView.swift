@@ -36,3 +36,30 @@ private extension GFAvatarImageView {
         translatesAutoresizingMaskIntoConstraints = false
     }
 }
+
+
+// MARK: - Utility methods
+extension GFAvatarImageView {
+    func downloadImage(from urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+        
+        let downloadTask = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
+            
+            guard let self = self else { return }
+            
+            guard
+                error == nil,
+                let response = response as? HTTPURLResponse,
+                response.statusCode == 200,
+                let data = data,
+                let image = UIImage(data: data)
+            else { return }
+            
+            DispatchQueue.main.async {
+                self.image = image
+            }
+        }
+        
+        downloadTask.resume()
+    }
+}

@@ -33,6 +33,7 @@ final class FollowerCell: UICollectionViewCell {
 extension FollowerCell {
     public func set(follower: Follower) {
         usernameLabel.text = follower.login
+        avatarImageView.downloadImage(from: follower.avatarUrl)
     }
 }
 

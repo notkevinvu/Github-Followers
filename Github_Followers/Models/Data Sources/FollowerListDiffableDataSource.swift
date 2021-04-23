@@ -58,7 +58,5 @@ private extension FollowerListDiffableDataSource {
 
 // MARK: - Sections
 extension FollowerListDiffableDataSource {
-    enum Section {
-        case main
-    }
+    enum Section { case main }
 }

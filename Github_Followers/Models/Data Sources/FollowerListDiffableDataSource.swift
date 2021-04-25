@@ -15,6 +15,8 @@ final class FollowerListDiffableDataSource: NSObject {
     
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Follower>
     
+    private var followers: [Follower] = []
+    
     
     // MARK: - Init
     init(collectionView: UICollectionView) {
@@ -24,14 +26,34 @@ final class FollowerListDiffableDataSource: NSObject {
 }
 
 
+// MARK: - Property methods
+extension FollowerListDiffableDataSource {
+    public func getListOfFollowers() -> [Follower] {
+        return followers
+    }
+    
+    public func updateFollowers(withNewFollowers newFollowers: [Follower]) {
+        self.followers.append(contentsOf: newFollowers)
+    }
+}
+
+
 // MARK: - Utility methods
 extension FollowerListDiffableDataSource {
-    func applySnapshot(forFollowers followers: [Follower]) {
+    /**
+     Updates the data source with the current followers array.
+     
+     Update the followers array with the
+     ```
+     updateFollowers(withNewFollowers:)
+     ```
+     method *before* updating the data source through this method.
+    */
+    func updateData() {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(followers)
-        
-        dataSource.apply(snapshot)
+        snapshot.appendItems(self.followers)
+        self.dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     func remove(_ follower: Follower, animate: Bool = true) {

@@ -16,6 +16,8 @@ final class FollowerListVC: UIViewController {
     // MARK: - Properties
     // set in getFollowersOnLoad()
     var username: String!
+    var page = 1
+    var hasMoreFollowers = true
     
     
     // MARK: - View lifecycle
@@ -23,7 +25,7 @@ final class FollowerListVC: UIViewController {
         super.viewDidLoad()
         configureViewController()
         configureCollectionView()
-        getFollowersOnLoad()
+        getFollowers(for: username, page: page)
     }
     
     
@@ -47,20 +49,52 @@ private extension FollowerListVC {
 
 // MARK: - Network methods
 private extension FollowerListVC {
-    func getFollowersOnLoad() {
-        // libquic failed error is apparently a simulator error - ignore,
-        // it does not affect behavior in any apparent way
-        NetworkManager.shared.getFollowers(for: username, page: 1) { [weak self] (result) in
+    // we keep the network call here instead of in the data source to avoid
+    // extra completion handlers (i.e. in the data source, if we get a .failure
+    // result, we would have to pass the .failure again here in order to
+    // present the GFAlert).
+    func getFollowers(for username: String, page: Int) {
+        // libquic failed error is apparently a simulator error - ignore
+        NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] (result) in
             guard let self = self else { return }
             
             switch result {
                 case .success(let followers):
+                    if followers.count < 100 { self.hasMoreFollowers = false }
+                    
+                    // app crashes if we don't specify main queue here;
+                    // the problem is not the updateFollowers method
                     DispatchQueue.main.async {
-                        self.dataSource.applySnapshot(forFollowers: followers)
+                        self.dataSource.updateFollowers(withNewFollowers: followers)
+                        self.dataSource.updateData()
                     }
+                    
                 case .failure(let errorMessage):
                     self.presentGFAlertOnMainThread(title: "Bad stuff happened", message: errorMessage.rawValue, buttonTitle: "Ok")
             }
+        }
+    }
+}
+
+
+// MARK: - Collection/Scroll delegate
+extension FollowerListVC: UICollectionViewDelegate {
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+        // if we have no more followers, just return instead of trying to
+        // get more followers
+        guard hasMoreFollowers else { return }
+        
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        // could use bounds here too, doesn't matter
+        let viewHeight = scrollView.frame.height
+        
+        // calculating if user has scrolled to the end of the view
+        if offsetY > contentHeight - viewHeight {
+            page += 1
+            getFollowers(for: username, page: page)
         }
     }
 }
@@ -71,6 +105,7 @@ private extension FollowerListVC {
     func configureCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.CollectionViewMethods.createThreeColumnCompositionalLayout(in: view))
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
+        collectionView.delegate = self
         view.addSubview(collectionView)
         collectionView.backgroundColor = .systemBackground
     }

@@ -35,6 +35,7 @@ final class FollowerListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
+        configureSearchController()
         configureCollectionViewAndDataSource()
         getFollowers(for: username, page: page)
     }
@@ -49,12 +50,35 @@ final class FollowerListVC: UIViewController {
 }
 
 
-// MARK: - VC Config methods
+// MARK: - Config methods
 private extension FollowerListVC {
     func configureViewController() {
         view.backgroundColor = .systemBackground
         title = username
         navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    
+    func configureSearchController() {
+        let searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        
+        searchController.searchBar.placeholder = "Search for a username"
+        searchController.obscuresBackgroundDuringPresentation = false
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    
+    func configureCollectionViewAndDataSource() {
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.CollectionViewMethods.createThreeColumnCompositionalLayout(in: view))
+        collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
+        collectionView.delegate = self
+        view.addSubview(collectionView)
+        collectionView.backgroundColor = .systemBackground
+        
+        dataSource = FollowerListDiffableDataSource(collectionView: collectionView)
     }
 }
 
@@ -81,7 +105,7 @@ private extension FollowerListVC {
                     if followers.count < 100 { self.hasMoreFollowers = false }
                     self.dataSource.updateFollowers(withNewFollowers: followers)
                     
-                    if self.dataSource.getListOfFollowers().isEmpty {
+                    if self.dataSource.getCurrentFollowers().isEmpty {
                         let message = "This user doesn't have any followers. Go follow them!"
                         DispatchQueue.main.async {
                             self.showEmptyStateView(with: message, in: self.view)
@@ -89,7 +113,7 @@ private extension FollowerListVC {
                         }
                     }
                     
-                    self.dataSource.updateDataOnMainThread()
+                    self.dataSource.updateDataOnMainThread(with: self.dataSource.getCurrentFollowers())
                     
                 case .failure(let errorMessage):
                     self.presentGFAlertOnMainThread(title: "Bad stuff happened", message: errorMessage.rawValue, buttonTitle: "Ok")
@@ -122,15 +146,29 @@ extension FollowerListVC: UICollectionViewDelegate {
 }
 
 
-// MARK: - Collection view config
-private extension FollowerListVC {
-    func configureCollectionViewAndDataSource() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.CollectionViewMethods.createThreeColumnCompositionalLayout(in: view))
-        collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
-        collectionView.delegate = self
-        view.addSubview(collectionView)
-        collectionView.backgroundColor = .systemBackground
+// MARK: - Search controller
+extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard
+            let filter = searchController.searchBar.text,
+            !filter.isEmpty
+        else {
+            dataSource.updateDataOnMainThread(with: dataSource.getCurrentFollowers())
+            return
+        }
         
-        dataSource = FollowerListDiffableDataSource(collectionView: collectionView)
+        // filters the current followers' logins to see which contain the
+        // current filter text
+        let filteredFollowers = dataSource.getCurrentFollowers().filter {
+            $0.login.lowercased().contains(filter.lowercased())
+        }
+        dataSource.updateDataOnMainThread(with: filteredFollowers)
     }
+    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        dataSource.updateDataOnMainThread(with: dataSource.getCurrentFollowers())
+    }
+    
 }

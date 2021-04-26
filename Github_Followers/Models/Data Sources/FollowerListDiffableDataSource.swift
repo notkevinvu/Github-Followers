@@ -28,7 +28,7 @@ final class FollowerListDiffableDataSource: NSObject {
 
 // MARK: - Property methods
 extension FollowerListDiffableDataSource {
-    public func getListOfFollowers() -> [Follower] {
+    public func getCurrentFollowers() -> [Follower] {
         return followers
     }
     
@@ -41,18 +41,18 @@ extension FollowerListDiffableDataSource {
 // MARK: - Utility methods
 extension FollowerListDiffableDataSource {
     /**
-     Updates the data source with the current followers array.
+     Updates the data source with the specified followers array.
      
-     Update the followers array with the
+     Example use case:
      ```
-     updateFollowers(withNewFollowers:)
+     dataSource.updateFollowers(withNewFollowers: followers)
+     dataSource.updateDataOnMainThread(with: dataSource.getFollowersArray())
      ```
-     method *before* updating the data source through this method.
     */
-    func updateDataOnMainThread() {
+    func updateDataOnMainThread(with followers: [Follower]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(self.followers)
+        snapshot.appendItems(followers)
         DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
     }
     

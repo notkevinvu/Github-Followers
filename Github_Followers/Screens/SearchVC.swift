@@ -42,8 +42,7 @@ class SearchVC: UIViewController {
 // MARK: - Search view delegate
 extension SearchVC: SearchViewDelegate {
     func searchView(_ searchView: SearchView, didSubmitSearchFor username: String) {
-        let followerListVC = FollowerListVC()
-        followerListVC.username = username
+        let followerListVC = FollowerListVC(username: username)
         followerListVC.title = username
         navigationController?.pushViewController(followerListVC, animated: true)
     }

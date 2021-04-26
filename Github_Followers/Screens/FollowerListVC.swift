@@ -11,7 +11,7 @@ final class FollowerListVC: UIViewController {
     
     // MARK: - UI Properties
     private var collectionView: UICollectionView!
-    private lazy var dataSource = FollowerListDiffableDataSource(collectionView: collectionView)
+    private var dataSource: FollowerListDiffableDataSource!
     
     // MARK: - Properties
     // set in getFollowersOnLoad()
@@ -35,7 +35,7 @@ final class FollowerListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
-        configureCollectionView()
+        configureCollectionViewAndDataSource()
         getFollowers(for: username, page: page)
     }
     
@@ -79,13 +79,8 @@ private extension FollowerListVC {
             switch result {
                 case .success(let followers):
                     if followers.count < 100 { self.hasMoreFollowers = false }
-                    
-                    // app crashes if we don't specify main queue here;
-                    // the problem is not the updateFollowers method
-                    DispatchQueue.main.async {
                         self.dataSource.updateFollowers(withNewFollowers: followers)
-                        self.dataSource.updateData()
-                    }
+                        self.dataSource.updateDataOnMainThread()
                     
                 case .failure(let errorMessage):
                     self.presentGFAlertOnMainThread(title: "Bad stuff happened", message: errorMessage.rawValue, buttonTitle: "Ok")
@@ -120,11 +115,13 @@ extension FollowerListVC: UICollectionViewDelegate {
 
 // MARK: - Collection view config
 private extension FollowerListVC {
-    func configureCollectionView() {
+    func configureCollectionViewAndDataSource() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.CollectionViewMethods.createThreeColumnCompositionalLayout(in: view))
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
         collectionView.delegate = self
         view.addSubview(collectionView)
         collectionView.backgroundColor = .systemBackground
+        
+        dataSource = FollowerListDiffableDataSource(collectionView: collectionView)
     }
 }

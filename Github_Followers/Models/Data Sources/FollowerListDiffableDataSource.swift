@@ -49,11 +49,11 @@ extension FollowerListDiffableDataSource {
      ```
      method *before* updating the data source through this method.
     */
-    func updateData() {
+    func updateDataOnMainThread() {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(self.followers)
-        self.dataSource.apply(snapshot, animatingDifferences: true)
+        DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
     }
     
     func remove(_ follower: Follower, animate: Bool = true) {

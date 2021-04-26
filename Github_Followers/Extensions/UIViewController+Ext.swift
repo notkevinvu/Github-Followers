@@ -11,6 +11,7 @@ fileprivate var containerView: UIView!
 
 extension UIViewController {
     
+    // MARK: - Present GF Alert
     func presentGFAlertOnMainThread(title: String, message: String, buttonTitle: String) {
         DispatchQueue.main.async {
             let alertVC = GFAlertVC(title: title, message: message, buttonTitle: buttonTitle)
@@ -21,6 +22,7 @@ extension UIViewController {
     }
     
     
+    // MARK: - Show loading view
     /**
      Presents and animates a full screen loading animation via `UIActivityIndicatorView`. This view
      has a partially transparent background
@@ -48,11 +50,19 @@ extension UIViewController {
     }
     
     
+    // MARK: - Dismiss loading view
     func dismissLoadingView() {
         DispatchQueue.main.async {
             containerView.removeFromSuperview()
             containerView = nil
         }
-        
+    }
+    
+    
+    // MARK: - Show empty state view
+    func showEmptyStateView(with message: String, in view: UIView) {
+        let emptyStateView = GFEmptyStateView(message: message)
+        emptyStateView.frame = view.bounds
+        view.addSubview(emptyStateView)
     }
 }

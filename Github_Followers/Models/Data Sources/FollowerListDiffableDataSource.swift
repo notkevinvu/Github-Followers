@@ -16,6 +16,7 @@ final class FollowerListDiffableDataSource: NSObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Follower>
     
     private var followers: [Follower] = []
+    private var filteredFollowers: [Follower] = []
     
     
     // MARK: - Init
@@ -34,6 +35,19 @@ extension FollowerListDiffableDataSource {
     
     public func updateFollowers(withNewFollowers newFollowers: [Follower]) {
         self.followers.append(contentsOf: newFollowers)
+    }
+    
+    public func getFilteredFollowers() -> [Follower] {
+        return filteredFollowers
+    }
+    
+    public func updateFilteredFollowers(withNewFollowers newFollowers: [Follower]) {
+        filteredFollowers = newFollowers
+    }
+    
+    public func follower(at index: Int, isFiltered: Bool) -> Follower {
+        let followerToReturn = isFiltered ? filteredFollowers[index] : followers[index]
+        return followerToReturn
     }
 }
 

@@ -146,10 +146,11 @@ extension FollowerListVC: UICollectionViewDelegate {
     }
     
     
+    // MARK: - Navigation
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let follower = dataSource.follower(at: indexPath.item, isFiltered: isSearching)
         
-        let destinationVC = UserInfoVC(follower: follower)
+        let destinationVC = UserInfoVC(username: follower.login)
         let navController = UINavigationController(rootViewController: destinationVC)
         present(navController, animated: true)
     }

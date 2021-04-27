@@ -10,15 +10,17 @@ import UIKit
 final class UserInfoVC: UIViewController {
     
     // MARK: - Properties
-    var follower: Follower
+    var username: String {
+        didSet { navigationItem.title = username }
+    }
     
     
     // MARK: - UI Properties
     
     
     // MARK: - Init
-    init(follower: Follower) {
-        self.follower = follower
+    init(username: String) {
+        self.username = username
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -32,13 +34,29 @@ final class UserInfoVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
+        configureNavController()
     }
     
 }
 
 
+// MARK: - Configuration
 private extension UserInfoVC {
     func configureViewController() {
         view.backgroundColor = .systemBackground
+    }
+    
+    
+    func configureNavController() {
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
+        navigationItem.rightBarButtonItem = doneButton
+    }
+}
+
+
+// MARK: - Utility methods
+private extension UserInfoVC {
+    @objc func dismissVC() {
+        dismiss(animated: true)
     }
 }

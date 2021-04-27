@@ -18,6 +18,7 @@ final class FollowerListVC: UIViewController {
     var username: String
     var page = 1
     var hasMoreFollowers = true
+    var isSearching = false
     
     
     // MARK: - Init
@@ -143,6 +144,15 @@ extension FollowerListVC: UICollectionViewDelegate {
             getFollowers(for: username, page: page)
         }
     }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let follower = dataSource.follower(at: indexPath.item, isFiltered: isSearching)
+        
+        let destinationVC = UserInfoVC(follower: follower)
+        let navController = UINavigationController(rootViewController: destinationVC)
+        present(navController, animated: true)
+    }
 }
 
 
@@ -154,20 +164,27 @@ extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
             let filter = searchController.searchBar.text,
             !filter.isEmpty
         else {
+            isSearching = false
             dataSource.updateDataOnMainThread(with: dataSource.getCurrentFollowers())
             return
         }
         
+        isSearching = true
         // filters the current followers' logins to see which contain the
         // current filter text
         let filteredFollowers = dataSource.getCurrentFollowers().filter {
             $0.login.lowercased().contains(filter.lowercased())
         }
-        dataSource.updateDataOnMainThread(with: filteredFollowers)
+        
+        dataSource.updateFilteredFollowers(withNewFollowers: filteredFollowers)
+        dataSource.updateDataOnMainThread(with: dataSource.getFilteredFollowers())
     }
     
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        isSearching = false
+        // revert data source snapshot data to current followers after user
+        // cancels the current search
         dataSource.updateDataOnMainThread(with: dataSource.getCurrentFollowers())
     }
     

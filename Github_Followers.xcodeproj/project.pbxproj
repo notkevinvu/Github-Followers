@@ -14,6 +14,7 @@
 		254B1F6126321537002F61EF /* FollowerListDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254B1F6026321537002F61EF /* FollowerListDiffableDataSource.swift */; };
 		254B1F652632582E002F61EF /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254B1F642632582E002F61EF /* UIHelper.swift */; };
 		254B1F7226368A4A002F61EF /* GFEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254B1F7126368A4A002F61EF /* GFEmptyStateView.swift */; };
+		254B1F752637EFF3002F61EF /* UserInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254B1F742637EFF3002F61EF /* UserInfoVC.swift */; };
 		25BD4DCE262558760088FBE7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD4DCD262558760088FBE7 /* AppDelegate.swift */; };
 		25BD4DD0262558760088FBE7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD4DCF262558760088FBE7 /* SceneDelegate.swift */; };
 		25BD4DD2262558760088FBE7 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD4DD1262558760088FBE7 /* SearchVC.swift */; };
@@ -41,6 +42,7 @@
 		254B1F6026321537002F61EF /* FollowerListDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerListDiffableDataSource.swift; sourceTree = "<group>"; };
 		254B1F642632582E002F61EF /* UIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		254B1F7126368A4A002F61EF /* GFEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFEmptyStateView.swift; sourceTree = "<group>"; };
+		254B1F742637EFF3002F61EF /* UserInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoVC.swift; sourceTree = "<group>"; };
 		25BD4DCA262558760088FBE7 /* Github_Followers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Github_Followers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25BD4DCD262558760088FBE7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25BD4DCF262558760088FBE7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 				25BD4DF02626B6630088FBE7 /* SearchView.swift */,
 				25BD4DD1262558760088FBE7 /* SearchVC.swift */,
 				25BD4DF526281F070088FBE7 /* FollowerListVC.swift */,
+				254B1F742637EFF3002F61EF /* UserInfoVC.swift */,
 				25BD4DE6262561A90088FBE7 /* FavoritesListVC.swift */,
 			);
 			path = Screens;
@@ -329,6 +332,7 @@
 				25BD4DCE262558760088FBE7 /* AppDelegate.swift in Sources */,
 				25BD4DFA26295F950088FBE7 /* GFTitleLabel.swift in Sources */,
 				25BD4DF626281F070088FBE7 /* FollowerListVC.swift in Sources */,
+				254B1F752637EFF3002F61EF /* UserInfoVC.swift in Sources */,
 				25BD4DD0262558760088FBE7 /* SceneDelegate.swift in Sources */,
 				25BD4DFD262965BA0088FBE7 /* GFBodyLabel.swift in Sources */,
 				254B1F652632582E002F61EF /* UIHelper.swift in Sources */,

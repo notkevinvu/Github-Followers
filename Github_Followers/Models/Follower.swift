@@ -10,10 +10,10 @@ import Foundation
 struct Follower: Codable, Hashable {
     // both are non-optional as the github api will always return a non-nil/null
     // value for these properties in the response JSON
-    var login: String
+    let login: String
     // avatarUrl is actually avatar_url in JSON response. We can use the
     // .convertFromSnakeCase keyDecodingStrategy when creating a Decoder object
     // to handle these cases
-    var avatarUrl: String
+    let avatarUrl: String
 }
 

@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol SearchViewDelegate: class {
+protocol SearchViewDelegate: AnyObject {
     func searchView(_ searchView: SearchView, didSubmitSearchFor username: String)
     // maybe add a parameter that allows us to specify a specific error
     // via an enum (i.e. .emptyUsername, .networkError, etc)

@@ -63,14 +63,14 @@ extension FollowerListDiffableDataSource {
      dataSource.updateDataOnMainThread(with: dataSource.getFollowersArray())
      ```
     */
-    func updateDataOnMainThread(with followers: [Follower]) {
+    public func updateDataOnMainThread(with followers: [Follower]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(followers)
         DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
     }
     
-    func remove(_ follower: Follower, animate: Bool = true) {
+    public func remove(_ follower: Follower, animate: Bool = true) {
         var snapshot = dataSource.snapshot()
         snapshot.deleteItems([follower])
         dataSource.apply(snapshot, animatingDifferences: animate)

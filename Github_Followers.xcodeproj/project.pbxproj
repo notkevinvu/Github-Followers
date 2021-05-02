@@ -75,6 +75,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2535EF7C263F28EA005B9E37 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				25BD4DF02626B6630088FBE7 /* SearchView.swift */,
+				25BD4DD1262558760088FBE7 /* SearchVC.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		254B1F4E262ED0BA002F61EF /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,11 +215,10 @@
 		25BD4E0C262E8F5A0088FBE7 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				25BD4DF02626B6630088FBE7 /* SearchView.swift */,
-				25BD4DD1262558760088FBE7 /* SearchVC.swift */,
-				25BD4DF526281F070088FBE7 /* FollowerListVC.swift */,
-				254B1F742637EFF3002F61EF /* UserInfoVC.swift */,
 				25BD4DE6262561A90088FBE7 /* FavoritesListVC.swift */,
+				25BD4DF526281F070088FBE7 /* FollowerListVC.swift */,
+				2535EF7C263F28EA005B9E37 /* Search */,
+				254B1F742637EFF3002F61EF /* UserInfoVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";

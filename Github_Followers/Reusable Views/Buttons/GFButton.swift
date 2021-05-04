@@ -29,6 +29,11 @@ final class GFButton: UIButton {
     }
     
     
+}
+
+
+// MARK: - Configuration
+extension GFButton {
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -40,4 +45,9 @@ final class GFButton: UIButton {
         titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
     }
     
+    
+    public func set(backgroundColor: UIColor, title: String) {
+        self.backgroundColor = backgroundColor
+        setTitle(title, for: .normal)
+    }
 }

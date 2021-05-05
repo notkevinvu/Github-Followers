@@ -33,17 +33,31 @@ extension FollowerListDiffableDataSource {
         return followers
     }
     
+    
     public func updateFollowers(withNewFollowers newFollowers: [Follower]) {
         self.followers.append(contentsOf: newFollowers)
     }
+    
+    
+    public func removeAllFollowers() {
+        followers.removeAll()
+    }
+    
     
     public func getFilteredFollowers() -> [Follower] {
         return filteredFollowers
     }
     
+    
     public func updateFilteredFollowers(withNewFollowers newFollowers: [Follower]) {
         filteredFollowers = newFollowers
     }
+    
+    
+    public func removeAllFilteredFollowers() {
+        filteredFollowers.removeAll()
+    }
+    
     
     public func follower(at index: Int, isFiltered: Bool) -> Follower {
         let followerToReturn = isFiltered ? filteredFollowers[index] : followers[index]

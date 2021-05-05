@@ -8,8 +8,8 @@
 import UIKit
 
 protocol UserInfoVCDelegate: NSObject {
-    func didTapGithubProfile()
-    func didTapGetFollowers()
+    func didTapGithubProfile(for user: User)
+    func didTapGetFollowers(for user: User)
 }
 
 final class UserInfoVC: UIViewController {
@@ -151,13 +151,16 @@ private extension UserInfoVC {
 // MARK: - Delegate methods
 extension UserInfoVC: UserInfoVCDelegate {
     
-    func didTapGithubProfile() {
-        #warning("Remove print statement")
-        print("Tapped github profile")
+    func didTapGithubProfile(for user: User) {
+        guard let url = URL(string: user.htmlUrl) else {
+            presentGFAlertOnMainThread(title: "Invalid URL", message: "The URL attached to this user is invalid.", buttonTitle: "Ok")
+            return
+        }
+        presentSafariVC(with: url)
     }
     
     
-    func didTapGetFollowers() {
+    func didTapGetFollowers(for user: User) {
         // dismiss VC
         // tell follower list screen the new user
         #warning("Remove print statement")

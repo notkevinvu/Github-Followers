@@ -26,6 +26,6 @@ extension GFRepoItemVC {
     
     
     override func actionButtonTapped() {
-        delegate?.didTapGithubProfile()
+        delegate?.didTapGithubProfile(for: user)
     }
 }

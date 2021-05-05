@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol FollowerListVCDelegate: NSObject {
+    func didRequestFollowers(for username: String)
+}
+
 final class FollowerListVC: UIViewController {
     
     // MARK: - UI Properties
@@ -124,6 +128,23 @@ private extension FollowerListVC {
 }
 
 
+// MARK: - Delegate methods
+extension FollowerListVC: FollowerListVCDelegate {
+    func didRequestFollowers(for username: String) {
+        // resetting state for new user
+        self.username       = username
+        title               = username
+        page                = 1
+        dataSource.removeAllFollowers()
+        dataSource.removeAllFilteredFollowers()
+        collectionView.setContentOffset(.zero, animated: true)
+        hasMoreFollowers = true
+        
+        getFollowers(for: username, page: page)
+    }
+}
+
+
 // MARK: - Collection/Scroll delegate
 extension FollowerListVC: UICollectionViewDelegate {
     
@@ -150,7 +171,7 @@ extension FollowerListVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let follower = dataSource.follower(at: indexPath.item, isFiltered: isSearching)
         
-        let destinationVC = UserInfoVC(username: follower.login)
+        let destinationVC = UserInfoVC(username: follower.login, delegate: self)
         let navController = UINavigationController(rootViewController: destinationVC)
         present(navController, animated: true)
     }

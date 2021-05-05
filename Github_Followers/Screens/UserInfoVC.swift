@@ -23,11 +23,13 @@ final class UserInfoVC: UIViewController {
     
     // MARK: - Properties
     var username: String
+    weak var delegate: FollowerListVCDelegate?
     
     
     // MARK: - Init
-    init(username: String) {
+    init(username: String, delegate: FollowerListVCDelegate) {
         self.username = username
+        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -161,10 +163,12 @@ extension UserInfoVC: UserInfoVCDelegate {
     
     
     func didTapGetFollowers(for user: User) {
-        // dismiss VC
-        // tell follower list screen the new user
-        #warning("Remove print statement")
-        print("Tapped get followers")
+        guard user.followers != 0 else {
+            presentGFAlertOnMainThread(title: "No followers", message: "This user has no followers. 😔", buttonTitle: "Ok")
+            return
+        }
+        delegate?.didRequestFollowers(for: user.login)
+        dismissVC()
     }
     
 }

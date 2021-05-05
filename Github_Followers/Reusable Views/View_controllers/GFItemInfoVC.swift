@@ -19,6 +19,7 @@ class GFItemInfoVC: UIViewController {
     
     // MARK: - Properties
     let user: User
+    weak var delegate: UserInfoVCDelegate?
     
     
     // MARK: - Init
@@ -38,6 +39,7 @@ class GFItemInfoVC: UIViewController {
         super.viewDidLoad()
         configureBackgroundView()
         configureStackView()
+        configureActionButton()
         layoutUI()
     }
     
@@ -59,6 +61,15 @@ extension GFItemInfoVC {
         stackView.addArrangedSubview(itemInfoViewOne)
         stackView.addArrangedSubview(itemInfoViewTwo)
     }
+    
+    
+    private func configureActionButton() {
+        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+    }
+    
+    
+    // empty so that subclasses can override and use their own implementation
+    @objc func actionButtonTapped() {}
     
     
     private func layoutUI() {

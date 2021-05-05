@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol UserInfoVCDelegate: NSObject {
+    func didTapGithubProfile()
+    func didTapGetFollowers()
+}
+
 final class UserInfoVC: UIViewController {
     
     // MARK: - UI Properties
@@ -101,6 +106,20 @@ extension UserInfoVC {
             dateLabel.heightAnchor.constraint(equalToConstant: 18)
         ])
     }
+    
+    
+    func configureUIElements(with user: User) {
+        let repoItemVC = GFRepoItemVC(user: user)
+        repoItemVC.delegate = self
+        
+        let followerItemVC = GFFollowerItemVC(user: user)
+        followerItemVC.delegate = self
+        
+        add(childVC: GFUserInfoHeaderVC(user: user), to: headerView)
+        add(childVC: repoItemVC, to: itemViewOne)
+        add(childVC: followerItemVC, to: itemViewTwo)
+        dateLabel.text = "Github user since \(user.createdAt.convertToDisplayFormat())"
+    }
 }
 
 
@@ -112,12 +131,7 @@ private extension UserInfoVC {
             
             switch result {
                 case .success(let user):
-                    DispatchQueue.main.async {
-                        self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
-                        self.add(childVC: GFRepoItemVC(user: user), to: self.itemViewOne)
-                        self.add(childVC: GFFollowerItemVC(user: user), to: self.itemViewTwo)
-                        self.dateLabel.text = "Github user since \(user.createdAt.convertToDisplayFormat())"
-                    }
+                    DispatchQueue.main.async { self.configureUIElements(with: user) }
                 case .failure(let error):
                     self.presentGFAlertOnMainThread(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
             }
@@ -131,4 +145,23 @@ private extension UserInfoVC {
     @objc func dismissVC() {
         dismiss(animated: true)
     }
+}
+
+
+// MARK: - Delegate methods
+extension UserInfoVC: UserInfoVCDelegate {
+    
+    func didTapGithubProfile() {
+        #warning("Remove print statement")
+        print("Tapped github profile")
+    }
+    
+    
+    func didTapGetFollowers() {
+        // dismiss VC
+        // tell follower list screen the new user
+        #warning("Remove print statement")
+        print("Tapped get followers")
+    }
+    
 }

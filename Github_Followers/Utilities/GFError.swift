@@ -13,14 +13,20 @@ import Foundation
 // since we are building our url via the username first.
 enum GFError: String, Error {
     /// Error for invalid usernames.
-    case invalidUsername = "This username created an invalid request. Please try again"
+    case invalidUsername = "This username created an invalid request. Please try again."
     
     /// Error for typical internet connection issues which render the request incomplete.
-    case unableToComplete = "Unable to complete your request. Please check your internet connection"
+    case unableToComplete = "Unable to complete your request. Please check your internet connection."
     
     /// Error for an invalid response from the server. i.e. HTTP response status code is not 200.
     case invalidResponse = "Invalid response from the server. Please try again."
     
     /// Error for invalid data following successful response.
-    case invalidData = "The data received from the server was invalid. Please try again"
+    case invalidData = "The data received from the server was invalid. Please try again."
+    
+    /// Error for retrieving data through user defaults.
+    case unableToFavorite = "There was an error favoriting this user. Please try again."
+    
+    /// The error case for when a user is already in the User Defaults favorites array.
+    case alreadyInFavorites = "You've already favorited this user."
 }

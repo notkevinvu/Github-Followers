@@ -18,8 +18,47 @@ enum PersistenceManager {
         static let favorites = "favorites"
     }
     
+    enum PersistenceActionType {
+        case add, remove
+    }
+    
     
     // MARK: - Methods
+    static func updateWith(favorite: Follower, actionType: PersistenceActionType, completion: @escaping (GFError?) -> Void) {
+        retrieveFavorites { result in
+            // finished retrieving, now analyze result
+            switch result {
+                case .success(let favorites):
+                    // if success, we have an array of favorites
+                    var retrievedFavorites = favorites
+                    
+                    // perform the desired action
+                    switch actionType {
+                        case .add:
+                            guard !retrievedFavorites.contains(favorite) else {
+                                completion(.alreadyInFavorites)
+                                return
+                            }
+                            
+                            // add specified follower to favorites if they aren't
+                            // already present
+                            retrievedFavorites.append(favorite)
+                        case .remove:
+                            // remove favorite from favorites array
+                            retrievedFavorites.removeAll { $0.login == favorite.login }
+                    }
+                    
+                    // finished adding/removing, save and pass the result
+                    // to the completion handler
+                    completion(save(favorites: retrievedFavorites))
+                    
+                case .failure(let error):
+                    completion(error)
+            }
+        }
+    }
+    
+    
     static func retrieveFavorites(completion: @escaping (Result<[Follower], GFError>) -> Void) {
         guard let favoritesData = defaults.object(forKey: Keys.favorites) as? Data else {
             // no objects at given key, first time accessing so we should have

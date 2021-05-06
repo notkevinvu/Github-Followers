@@ -61,6 +61,9 @@ private extension FollowerListVC {
         view.backgroundColor = .systemBackground
         title = username
         navigationController?.navigationBar.prefersLargeTitles = true
+        
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+        navigationItem.rightBarButtonItem = addButton
     }
     
     
@@ -84,6 +87,15 @@ private extension FollowerListVC {
         collectionView.backgroundColor = .systemBackground
         
         dataSource = FollowerListDiffableDataSource(collectionView: collectionView)
+    }
+}
+
+
+// MARK: - Utility methods
+extension FollowerListVC {
+    @objc func addButtonTapped() {
+        #warning("Remove print statement")
+        print("Add button tapped")
     }
 }
 

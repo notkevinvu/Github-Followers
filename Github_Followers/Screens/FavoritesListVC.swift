@@ -41,6 +41,7 @@ extension FavoritesListVC {
     }
     
     
+    // MARK: - Table view config
     private func configureTableView() {
         view.addSubview(tableView)
         
@@ -54,6 +55,7 @@ extension FavoritesListVC {
     }
     
     
+    // MARK: - Get favorites network call
     private func getFavorites() {
         PersistenceManager.retrieveFavorites { [weak self] result in
             guard let self = self else { return }

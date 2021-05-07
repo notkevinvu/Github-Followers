@@ -18,6 +18,7 @@ final class FavoriteCell: UITableViewCell {
     static let reuseID = "FavoriteCell"
     
     
+    // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()

@@ -94,8 +94,28 @@ private extension FollowerListVC {
 // MARK: - Utility methods
 extension FollowerListVC {
     @objc func addButtonTapped() {
-        #warning("Remove print statement")
-        print("Add button tapped")
+        showLoadingView()
+        
+        NetworkManager.shared.getUser(for: username) { [weak self] result in
+            guard let self = self else { return }
+            self.dismissLoadingView()
+            
+            switch result {
+                case .success(let user):
+                    let favorite = Follower(login: user.login, avatarUrl: user.avatarUrl)
+                    
+                    PersistenceManager.updateWith(favorite: favorite, actionType: .add) { error in
+                        guard error == nil else {
+                            // if we are here, error is not nil, thus we can force unwrap
+                            self.presentGFAlertOnMainThread(title: "Something went wrong!", message: error!.rawValue, buttonTitle: "Ok")
+                            return
+                        }
+                        self.presentGFAlertOnMainThread(title: "Success!", message: "You have successfully favorited this user.", buttonTitle: "Ok")
+                    }
+                case .failure(let error):
+                    self.presentGFAlertOnMainThread(title: "Something went wrong!", message: error.rawValue, buttonTitle: "Ok")
+            }
+        }
     }
 }
 

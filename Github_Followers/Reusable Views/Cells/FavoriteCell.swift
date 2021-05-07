@@ -46,7 +46,7 @@ extension FavoriteCell {
             avatarImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             avatarImageView.heightAnchor.constraint(equalToConstant: 60),
-            avatarImageView.widthAnchor.constraint(equalTo: heightAnchor),
+            avatarImageView.widthAnchor.constraint(equalToConstant: 60),
             
             usernameLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             usernameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 24),

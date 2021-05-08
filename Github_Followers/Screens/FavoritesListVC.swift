@@ -61,8 +61,11 @@ extension FavoritesListVC {
             guard let self = self else { return }
             switch result {
                 case .success(let favorites):
+
                     guard !favorites.isEmpty else {
-                        self.showEmptyStateView(with: "No favorites?\nGo add some on the follower screen!", in: self.view)
+                        DispatchQueue.main.async {
+                            self.showEmptyStateView(with: "No favorites?\nGo add some on the follower screen!", in: self.view)
+                        }
                         return
                     }
                     
@@ -84,13 +87,14 @@ extension FavoritesListVC {
 }
 
 
-// MARK: - Table view methods
 // keep table view methods here since it's simple at the moment and will be
 // for the foreseeable future
 extension FavoritesListVC: UITableViewDelegate, UITableViewDataSource {
+    // MARK: - Table view data
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return favorites.count
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FavoriteCell.reuseID, for: indexPath) as! FavoriteCell
@@ -100,5 +104,35 @@ extension FavoritesListVC: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    
+    // MARK: - Table view delegate
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let favorite = favorites[indexPath.row]
+        let destVC = FollowerListVC(username: favorite.login)
+        
+        navigationController?.pushViewController(destVC, animated: true)
+    }
+    
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
+        
+        let favorite = favorites[indexPath.row]
+        
+        PersistenceManager.updateWith(favorite: favorite, actionType: .remove) { [weak self] error in
+            guard let self = self else { return }
+            
+            guard error == nil else {
+                self.presentGFAlertOnMainThread(title: "Unable to remove", message: error!.rawValue, buttonTitle: "Ok")
+                return
+            }
+            
+            // remove from local data sources if error is nil
+            self.favorites.remove(at: indexPath.row)
+            DispatchQueue.main.async {
+                tableView.deleteRows(at: [indexPath], with: .left)
+            }
+        }
+    }
     
 }

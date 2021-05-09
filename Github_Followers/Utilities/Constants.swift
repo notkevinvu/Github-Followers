@@ -17,6 +17,12 @@ enum SFSymbols {
 }
 
 
+// MARK: - Asset images
+enum Images {
+    static let ghLogo = "gh-logo"
+}
+
+
 // MARK: - Screen size
 enum ScreenSize {
     static let width = UIScreen.main.bounds.size.width

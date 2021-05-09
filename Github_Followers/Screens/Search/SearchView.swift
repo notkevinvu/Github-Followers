@@ -24,7 +24,7 @@ final class SearchView: UIView {
     private let logoImageView: UIImageView = {
         let imView = UIImageView(frame: .zero)
         imView.translatesAutoresizingMaskIntoConstraints = false
-        imView.image = UIImage(named: "gh-logo")!
+        imView.image = UIImage(named: Images.ghLogo)!
         return imView
     }()
     
@@ -74,7 +74,9 @@ final class SearchView: UIView {
     private func configureLogoImageView() {
         addSubview(logoImageView)
         
-        let imageTopAnchor = logoImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 80)
+        let topConstraintConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80
+        
+        let imageTopAnchor = logoImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: topConstraintConstant)
         let imageCenterXAnchor = logoImageView.centerXAnchor.constraint(equalTo: centerXAnchor)
         
         let imageHeightAnchor = logoImageView.heightAnchor.constraint(equalToConstant: 200)

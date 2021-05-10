@@ -37,6 +37,7 @@ final class GFEmptyStateView: UIView {
 // MARK: - Configuration
 private extension GFEmptyStateView {
     func configure() {
+        backgroundColor = .systemBackground
         addSubview(messageLabel)
         addSubview(logoImageView)
         

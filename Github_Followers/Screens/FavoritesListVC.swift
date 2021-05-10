@@ -64,7 +64,7 @@ extension FavoritesListVC {
 
                     guard !favorites.isEmpty else {
                         DispatchQueue.main.async {
-                            self.showEmptyStateView(with: "No favorites?\nGo add some on the follower screen!", in: self.view)
+                            self.showEmptyStateView(with: "No favorites?\nGo add some on the followers screen!", in: self.view)
                         }
                         return
                     }

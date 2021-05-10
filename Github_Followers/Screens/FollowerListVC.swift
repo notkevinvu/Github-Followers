@@ -18,7 +18,6 @@ final class FollowerListVC: UIViewController {
     private var dataSource: FollowerListDiffableDataSource!
     
     // MARK: - Properties
-    // set in getFollowersOnLoad()
     var username: String
     var page = 1
     var hasMoreFollowers = true
@@ -30,6 +29,7 @@ final class FollowerListVC: UIViewController {
         self.username = username
         super.init(nibName: nil, bundle: nil)
     }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

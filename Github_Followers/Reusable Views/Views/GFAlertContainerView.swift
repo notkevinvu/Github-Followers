@@ -26,13 +26,13 @@ final class GFAlertContainerView: UIView {
 // MARK: - Setup methods
 private extension GFAlertContainerView {
     func configure() {
-        backgroundColor = .systemBackground
-        layer.cornerRadius = 16
+        backgroundColor     = .systemBackground
+        layer.cornerRadius  = 16
         // white border will provide a visual separation when the app is in
         // dark mode, as the container view and the underlying view will
         // likely be the same color
-        layer.borderWidth = 2
-        layer.borderColor = UIColor.white.cgColor
+        layer.borderWidth   = 2
+        layer.borderColor   = UIColor.white.cgColor
         
         translatesAutoresizingMaskIntoConstraints = false
     }

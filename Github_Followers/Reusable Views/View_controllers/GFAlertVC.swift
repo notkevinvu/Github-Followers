@@ -42,8 +42,7 @@ final class GFAlertVC: UIViewController {
     // MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // transparent black background
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.75)
+        view.backgroundColor = .black.withAlphaComponent(0.75)
         
         configureSubviews()
     }

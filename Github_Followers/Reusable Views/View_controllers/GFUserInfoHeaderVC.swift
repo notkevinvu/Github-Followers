@@ -53,7 +53,7 @@ final class GFUserInfoHeaderVC: UIViewController {
 // MARK: - Subview configuration
 extension GFUserInfoHeaderVC {
     private func configureUIElements() {
-        avatarImageView.downloadImage(from: user.avatarUrl)
+        downloadAvatarImage()
         usernameLabel.text = user.login
         nameLabel.text = user.name ?? ""
         locationLabel.text = user.location ?? "No location"
@@ -117,6 +117,15 @@ extension GFUserInfoHeaderVC {
             // want 3 lines max and 60 height gives us roughly that
             bioLabel.heightAnchor.constraint(equalToConstant: 60)
         ])
+    }
+    
+    
+    // MARK: - Utility
+    private func downloadAvatarImage() {
+        NetworkManager.shared.downloadImage(from: user.avatarUrl) { [weak self] image in
+            guard let self = self else { return }
+            DispatchQueue.main.async { self.avatarImageView.image = image }
+        }
     }
     
 }

@@ -20,6 +20,7 @@ final class NetworkManager {
     
 }
 
+
 // MARK: - Public methods
 extension NetworkManager {
     
@@ -35,6 +36,43 @@ extension NetworkManager {
     public func getUser(for username: String, completion: @escaping (Result<User, GFError>) -> Void) {
         let endpoint = baseURL + "users/\(username)"
         _getJSONData(forEndpoint: endpoint, completion: completion)
+    }
+    
+    
+    // MARK: - Download image
+    func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
+        let cacheKey = NSString(string: urlString)
+        
+        // retrieving image from network manager cache if it exists for faster
+        // retrieval compared to re-downloading images if we need to reuse cells
+        if let cacheImage = cache.object(forKey: cacheKey) {
+            completion(cacheImage)
+            return
+        }
+        
+        guard let url = URL(string: urlString) else { completion(nil); return }
+        
+        // downloading image from url
+        let downloadTask = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
+            
+            guard
+                let self = self,
+                error == nil,
+                let response = response as? HTTPURLResponse,
+                response.statusCode == 200,
+                let data = data,
+                let image = UIImage(data: data)
+            else {
+                completion(nil)
+                return
+            }
+            
+            // once we get the image, add it to the cache for faster local reuse
+            self.cache.setObject(image, forKey: cacheKey)
+            completion(image)
+        }
+        
+        downloadTask.resume()
     }
 }
 
@@ -77,4 +115,5 @@ private extension NetworkManager {
         
         task.resume()
     }
+    
 }

@@ -49,27 +49,10 @@ final class SearchView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    // MARK: - Utility methods
-    private func createDismissKeyboardTapGesture() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(endEditing(_:)))
-        addGestureRecognizer(tap)
-    }
-    
-    
-    // MARK: - Navigation method
-    @objc private func pushFollowerListVC() {
-        guard
-            let username = usernameTextField.text,
-            !username.trimmingCharacters(in: .whitespaces).isEmpty
-        else {
-            delegate?.searchViewDidReceiveError(self)
-            return
-        }
-        delegate?.searchView(self, didSubmitSearchFor: username)
-    }
-    
-    
+}
+
+
+extension SearchView {
     // MARK: - Subview methods
     private func configureLogoImageView() {
         addSubview(logoImageView)
@@ -144,6 +127,30 @@ final class SearchView: UIView {
         configureGetFollowersButton()
     }
     
+    
+    // MARK: - Utility methods
+    private func createDismissKeyboardTapGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(endEditing(_:)))
+        addGestureRecognizer(tap)
+    }
+    
+    
+    public func clearTextField() {
+        usernameTextField.text = ""
+    }
+    
+    
+    // MARK: - Navigation method
+    @objc private func pushFollowerListVC() {
+        guard
+            let username = usernameTextField.text,
+            !username.trimmingCharacters(in: .whitespaces).isEmpty
+        else {
+            delegate?.searchViewDidReceiveError(self)
+            return
+        }
+        delegate?.searchView(self, didSubmitSearchFor: username)
+    }
 }
 
 
@@ -152,7 +159,7 @@ extension SearchView: UITextFieldDelegate {
     // passing data and dismissing keyboard after pressing return/go
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         pushFollowerListVC()
-        endEditing(true)
+        textField.resignFirstResponder()
         return true
     }
 }

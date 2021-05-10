@@ -10,6 +10,7 @@ import UIKit
 final class GFTextField: UITextField {
     
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -20,7 +21,11 @@ final class GFTextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+}
+
+
+extension GFTextField {
+    // MARK: - Configuration
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -44,9 +49,9 @@ final class GFTextField: UITextField {
         backgroundColor = .tertiarySystemBackground
         autocorrectionType = .no
         returnKeyType = .go
+        clearButtonMode = .whileEditing
         autocapitalizationType = .none
         
         placeholder = "Enter a username"
     }
-    
 }

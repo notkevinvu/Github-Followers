@@ -9,6 +9,7 @@ import UIKit
 
 final class GFTitleLabel: UILabel {
     
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -21,18 +22,20 @@ final class GFTitleLabel: UILabel {
     
     
     /**
-     Init method for custom title labels. We specify a font size rather than use a preferred font since
+     Convenience init method for custom title labels. We specify a font size rather than use a preferred font since
      we should always have our titles big and bold (no worry about it being too small for accessibility issues.
      
      - Parameters:
         - textAlignment: Pinning behavior for text on the label.
         - fontSize: Title label should be at least 16-20 points.
      */
-    init(textAlignment: NSTextAlignment, fontSize: CGFloat) {
-        super.init(frame: .zero)
+    convenience init(textAlignment: NSTextAlignment, fontSize: CGFloat) {
+        // convenience init must call designated init. In this case,
+        // self.init(frame: .zero) will call the init on line 13 and thus
+        // we don't need to call configure()
+        self.init(frame: .zero)
         self.textAlignment = textAlignment
         self.font = UIFont.systemFont(ofSize: fontSize, weight: .bold)
-        configure()
     }
 }
 

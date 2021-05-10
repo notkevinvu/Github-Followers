@@ -24,10 +24,9 @@ final class GFSecondaryTitleLabel: UILabel {
     }
     
     
-    init(fontSize: CGFloat) {
-        super.init(frame: .zero)
+    convenience init(fontSize: CGFloat) {
+        self.init(frame: .zero)
         font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
-        configure()
     }
 }
 

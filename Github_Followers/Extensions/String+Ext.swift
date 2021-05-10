@@ -7,6 +7,8 @@
 
 import Foundation
 
+// don't need this if we use the .iso8601 dateDecodingStrategy for the JSONDecoder
+// the date extension is good enough
 extension String {
     
     func convertToDate() -> Date? {

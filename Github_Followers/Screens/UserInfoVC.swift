@@ -120,7 +120,7 @@ extension UserInfoVC {
         add(childVC: GFUserInfoHeaderVC(user: user), to: headerView)
         add(childVC: repoItemVC, to: itemViewOne)
         add(childVC: followerItemVC, to: itemViewTwo)
-        dateLabel.text = "Github user since \(user.createdAt.convertToDisplayFormat())"
+        dateLabel.text = "Github user since \(user.createdAt.convertToMonthYearFormat())"
     }
 }
 

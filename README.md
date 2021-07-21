@@ -1,6 +1,8 @@
 # Github-Followers
 Demo app using the github API to retrieve and filter publicly available github users and followers
 
+\*DISCLAIMER\* - This was created based off of Sean Allen's version of the app. I have put my own spin on it (technically) for me to learn and reinforce my iOS/Swift fundamentals.
+
 ## Breakdown of the app
 An iOS app that allows users to search usernames on GitHub to look at followers for that user and to see more information on those followers. Also allows you to favorite any user to search them on demand.
 
